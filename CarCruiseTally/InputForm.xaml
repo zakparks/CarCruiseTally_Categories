@@ -1,8 +1,8 @@
 ﻿<Window x:Class="CarCruiseTally.InputForm"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Cruise Tally Form" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Height="265.509" Width="500">
-    <Grid Width="487" HorizontalAlignment="Left">
+        Title="Cruise Tally Form" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Height="272.087" Width="500">
+    <Grid Width="487" HorizontalAlignment="Left" Margin="0,0,0,3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="247*" />
             <ColumnDefinition Width="247*" />
@@ -12,18 +12,19 @@
         <Button Content="Clear" Height="23" HorizontalAlignment="Left" Margin="91,200,0,0" Name="btn_clear" VerticalAlignment="Top" Width="69" Click="btn_clear_Click" />
         <Button Content="Export" Height="23" HorizontalAlignment="Left" Margin="166,200,0,0" Name="btn_export" VerticalAlignment="Top" Width="69" Click="btn_export_Click" />
 
+        <Button Content="Update" Height="23" HorizontalAlignment="Left" Margin="14,200,0,0" Name="btn_update" VerticalAlignment="Top" Width="69" Grid.Column="1" Click="btn_update_Click" />
+        <Button Content="Undo Last" Height="23" HorizontalAlignment="Left" Margin="91,200,82,12" Name="btn_undoPrev" VerticalAlignment="Top" Width="69" Grid.Column="1" Click="btn_undoPrev_Click"/>
+        <Button Content="Exit" Height="23" HorizontalAlignment="Left" Margin="166,200,0,0" Name="btn_exit" VerticalAlignment="Top" Width="69" Grid.Column="1" Click="btn_exit_Click" />
+
         <TextBox Grid.Column="1" Height="54" HorizontalAlignment="Left" Margin="70,14,0,0" Name="txt_curWinners" VerticalAlignment="Top" Width="163" TextWrapping="Wrap" IsEnabled="False" IsReadOnly="True" />
         <TextBox Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="84,173,0,0" Name="txt_BestInShowWinner" VerticalAlignment="Top" Width="43" IsReadOnly="True" IsEnabled="False" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="191,173,0,0" Name="txt_ReserveInShowWinner" VerticalAlignment="Top" Width="42" Grid.Column="1" IsReadOnly="True" IsEnabled="False" />
-        <Label Content="Top 20:" Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="15,44,0,0" Name="lbl_CurrentWinners" VerticalAlignment="Top" />
+        <Label Content="Top 10:" Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="15,44,0,0" Name="lbl_CurrentWinners" VerticalAlignment="Top" />
         <Label Content="Best In Show" Height="28" HorizontalAlignment="Left" Margin="10,168,0,0" Name="lbl_BestInShowWinner" VerticalAlignment="Top" Grid.Column="1" />
         <Label Content="Reserve" Height="28" HorizontalAlignment="Left" Margin="132,168,0,0" Name="lbl_ReserveInShowWinner" VerticalAlignment="Top" Grid.Column="1" />
-        <Button Content="Update" Height="23" HorizontalAlignment="Left" Margin="14,200,0,0" Name="btn_update" VerticalAlignment="Top" Width="69" Grid.Column="1" Click="btn_update_Click" />
-        <Button Content="Undo Prev." Height="23" x:Name="btn_undoPrev" Margin="89,191,84,5" Click="btn_undoPrev_Click" Grid.Column="1" />
-        <Button Content="Exit" Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="166,200,0,0" Name="btn_exit" VerticalAlignment="Top" Width="69" Click="btn_exit_Click" />
 
         <TextBox Height="54" HorizontalAlignment="Left" Margin="75,14,0,0" Name="txt_carNumbers" VerticalAlignment="Top" Width="149" TabIndex="1" LostFocus="txt_lostFocus"/>
-        <Label Content="Top 20:" Height="28" HorizontalAlignment="Left" Margin="7,47,0,0" Name="lbl_top20" VerticalAlignment="Top" />
+        <Label Content="Top 10:" Height="28" HorizontalAlignment="Left" Margin="7,47,0,0" Name="lbl_top10" VerticalAlignment="Top" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="75,73,0,0" Name="txt_StreetRod" VerticalAlignment="Top" Width="43" TabIndex="2" LostFocus="txt_lostFocus" />
         <Label Content="Street Rod:" Height="25" HorizontalAlignment="Left" Margin="6,71,0,0" Name="lbl_StreetCar" VerticalAlignment="Top" Width="64" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="75,98,0,0" Name="txt_Modern" VerticalAlignment="Top" Width="43" TabIndex="3" LostFocus="txt_lostFocus" />

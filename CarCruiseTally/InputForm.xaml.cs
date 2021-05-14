@@ -19,17 +19,12 @@ namespace CarCruiseTally
         /// <summary>
         ///  list of all the ballots submitted
         /// </summary>
-        private readonly List<Ballot> _ballots = new List<Ballot>();
+        private readonly List<Ballot> Ballots = new List<Ballot>();
 
         /// <summary>
         /// Current ordered list of all the unique cars
         /// </summary>
         private List<int> CurrentOrderedTally { get; set; }
-
-        /// <summary>
-        /// Current best in show
-        /// </summary>
-        private List<int> WonOtherAward { get; set; }
 
         #region BestInX properties
         /// <summary>
@@ -96,26 +91,19 @@ namespace CarCruiseTally
         /// <param name="e">event arguments</param>
         private void btn_submit_Click(object sender, RoutedEventArgs e)
         {
-            // get information from the UI
-            if (txt_carNumbers.Text == "")
+            Ballots.Add(new Ballot()
             {
-                return;
-            }
-            
-            int [] carNumbers = Array.ConvertAll(txt_carNumbers.Text.Split(), int.Parse);
-            int streedrod = txt_StreetRod.Text == "" ? 0 : int.Parse(txt_StreetRod.Text);
-            int modern = txt_Modern.Text == "" ? 0 : int.Parse(txt_Modern.Text);
-            int import = txt_Import.Text == "" ? 0 : int.Parse(txt_Import.Text);
-            int ratrod = txt_RatRod.Text == "" ? 0 : int.Parse(txt_RatRod.Text);
-            int classictruck = txt_ClassicTruck.Text == "" ? 0 : int.Parse(txt_ClassicTruck.Text);
-            int bike = txt_Bike.Text == "" ? 0 : int.Parse(txt_Bike.Text);
-            int classiccar = txt_ClassicCar.Text == "" ? 0 : int.Parse(txt_ClassicCar.Text);
-            int fourwd = txt_FourWD.Text == "" ? 0 : int.Parse(txt_FourWD.Text);
-            int bestinshow = txt_BestInShow.Text == "" ? 0 : int.Parse(txt_BestInShow.Text);
-
-            // save the data
-            Ballot b = new Ballot(carNumbers, streedrod, modern, import, ratrod, classictruck, bike, classiccar, fourwd, bestinshow);
-            _ballots.Add(b);
+                Top10 = Array.ConvertAll(txt_carNumbers.Text.Split(), int.Parse),
+                StreetRod = int.Parse(txt_StreetRod.Text),
+                Modern = int.Parse(txt_Modern.Text),
+                Import = int.Parse(txt_Import.Text),
+                RatRod = int.Parse(txt_RatRod.Text),
+                ClassicTruck = int.Parse(txt_ClassicTruck.Text),
+                Bike = int.Parse(txt_Bike.Text),
+                ClassicCar = int.Parse(txt_ClassicCar.Text),
+                FourWD = int.Parse(txt_FourWD.Text),
+                BestInShow = int.Parse(txt_BestInShow.Text)
+            });
 
             // clear the form
             ClearForm();
@@ -129,8 +117,12 @@ namespace CarCruiseTally
         /// </summary>
         private void TallyCurrentBallots() 
         {
-            // Get Bests/non top 20 votes
-            List<int> bestInShowList = _ballots.Select(i => i.BestInShow).ToList().GroupBy(j => j).OrderByDescending(k => k.Count()).Select(l => l.Key).ToList();
+            // Get Bests/non top 10 votes
+            List<int> bestInShowList = Ballots.Select(i => i.BestInShow).ToList()
+                .GroupBy(j => j)
+                .OrderByDescending(k => k.Count())
+                .Select(l => l.Key)
+                .ToList();
             bestInShowList.RemoveAll(m => m == 0);
 
             if (bestInShowList.Count() > 2)
@@ -139,49 +131,20 @@ namespace CarCruiseTally
                 ReserveInShow = bestInShowList[1];
             }
 
-            List<int> bestStreetRodList = _ballots.Select(i => i.StreedRod).ToList().GroupBy(j => j).OrderByDescending(k => k.Count()).Select(l => l.Key).ToList();
-            bestStreetRodList.RemoveAll(m => m == 0);
-            BestStreetRod = GetTopValue(bestStreetRodList);
-
-            List<int> bestModernList = _ballots.Select(i => i.Modern).ToList().GroupBy(j => j).OrderByDescending(k => k.Count()).Select(l => l.Key).ToList();
-            bestModernList.RemoveAll(m => m == 0);
-            BestModern = GetTopValue(bestModernList);
-
-            List<int> bestImportList = _ballots.Select(i => i.Import).ToList().GroupBy(j => j).OrderByDescending(k => k.Count()).Select(l => l.Key).ToList();
-            bestImportList.RemoveAll(m => m == 0);
-            BestImport = GetTopValue(bestImportList);
-
-            List<int> bestRatRodList = _ballots.Select(i => i.RatRod).ToList().GroupBy(j => j).OrderByDescending(k => k.Count()).Select(l => l.Key).ToList();
-            bestRatRodList.RemoveAll(m => m == 0);
-            BestRatRod = GetTopValue(bestRatRodList);
-
-            List<int> bestClassicTruckList = _ballots.Select(i => i.ClassicTruck).ToList().GroupBy(j => j).OrderByDescending(k => k.Count()).Select(l => l.Key).ToList();
-            bestClassicTruckList.RemoveAll(m => m == 0);
-            BestClassicTruck = GetTopValue(bestClassicTruckList);
-
-            List<int> bestBikeList = _ballots.Select(i => i.Bike).ToList().GroupBy(j => j).OrderByDescending(k => k.Count()).Select(l => l.Key).ToList();
-            bestBikeList.RemoveAll(m => m == 0);
-            BestBike = GetTopValue(bestBikeList);
-
-            List<int> bestClassicCarList = _ballots.Select(i => i.ClassicCar).ToList().GroupBy(j => j).OrderByDescending(k => k.Count()).Select(l => l.Key).ToList();
-            bestClassicCarList.RemoveAll(m => m == 0);
-            BestClassicCar = GetTopValue(bestClassicCarList);
-
-            List<int> bestFourWDList = _ballots.Select(i => i.FourWD).ToList().GroupBy(j => j).OrderByDescending(k => k.Count()).Select(l => l.Key).ToList();
-            bestFourWDList.RemoveAll(m => m == 0);
-            BestFourWD = GetTopValue(bestFourWDList);
-
-            // Populate in the UI
-            txt_BestInShowWinner.Text = BestInShow.ToString();
-            txt_ReserveInShowWinner.Text = ReserveInShow.ToString();
+            BestStreetRod = GetTopValue(Ballots.Select(i => i.StreetRod).ToList());
+            BestModern = GetTopValue(Ballots.Select(i => i.Modern).ToList());
+            BestImport = GetTopValue(Ballots.Select(i => i.Import).ToList());
+            BestRatRod = GetTopValue(Ballots.Select(i => i.RatRod).ToList());
+            BestClassicTruck = GetTopValue(Ballots.Select(i => i.ClassicTruck).ToList());
+            BestBike = GetTopValue(Ballots.Select(i => i.Bike).ToList());
+            BestClassicCar = GetTopValue(Ballots.Select(i => i.ClassicCar).ToList());
+            BestFourWD = GetTopValue(Ballots.Select(i => i.FourWD).ToList());
                         
             // calculate car that is in the lead for general vote
-            CurrentOrderedTally = _ballots.SelectMany(a => a.Top20).GroupBy(b => b).OrderByDescending(c => c.Count()).Select(d => d.Key).ToList();
+            CurrentOrderedTally = Ballots.SelectMany(a => a.Top10).GroupBy(b => b).OrderByDescending(c => c.Count()).Select(d => d.Key).ToList();
             CurrentOrderedTally.RemoveAll(m => m == 0);
-
-            // Get the top 20
-            int top20 = 0;
-            string top20display = "";
+            
+            string top10display = "";
             for (int i = 0; i < CurrentOrderedTally.Count; i++) 
             {
                 // check to see if the current car has already won something, skip if true
@@ -191,18 +154,11 @@ namespace CarCruiseTally
                 }
                 
                 //add to the string
-                top20display += CurrentOrderedTally[i] + ", ";
-
-                // insert a special character to denote that 20 cars have been selected. 
-                // Sometimes things are changed after calculation and it helps to have more than 20 cars displayed
-                if (i == 20)
-                {
-                    top20display += " | ";
-                }
+                top10display += CurrentOrderedTally[i] + ", ";
             }
 
             // add strings to the interface
-            txt_curWinners.Text = top20display.Substring(0, top20display.Length - 2);
+            txt_curWinners.Text = top10display.Substring(0, top10display.Length - 2);
             txt_StreetRodWinner.Text = BestStreetRod.ToString();
             txt_ModernWinner.Text = BestModern.ToString();
             txt_ImportWinner.Text = BestImport.ToString();
@@ -215,35 +171,27 @@ namespace CarCruiseTally
             txt_ReserveInShowWinner.Text = ReserveInShow.ToString();
         }
 
-        /// <summary>
-        /// Gets the winner of the specified list, ignoring BoS and RoS as they are priority winners
-        /// </summary>
-        /// <param name="list">Sorted list of votes for a particular category</param>
-        /// <returns></returns>
         private int GetTopValue(List<int> list)
         {
-            foreach (int i in list)
+            list = list.GroupBy(j => j)
+                .OrderByDescending(k => k.Count())
+                .Select(l => l.Key).ToList();
+            list.RemoveAll(m => m == 0);
+            
+            foreach (int i in list.Where(i => i != BestInShow || i != ReserveInShow))
             {
-                if (i == BestInShow || i == ReserveInShow)
-                {
-                    continue;
-                }
-
                 return i;
             }
 
             return 0;
         }
-        
+
         /// <summary>
         /// Clear all the input forms
         /// </summary>
         /// <param name="sender">object snder</param>
         /// <param name="e">event arguments</param>
-        private void btn_clear_Click(object sender, RoutedEventArgs e)
-        {
-            ClearForm();
-        }
+        private void btn_clear_Click(object sender, RoutedEventArgs e) => ClearForm();
 
         /// <summary>
         /// Clear all the input forms
@@ -282,12 +230,12 @@ namespace CarCruiseTally
             };
 
             // add the header line with the column titles
-            sb.AppendLine("Street Rod,Modern,Import,Rat Rod,Classic Truck,Bike,Classic Car,4wd,Best in Show,Top 20");
+            sb.AppendLine("Street Rod,Modern,Import,Rat Rod,Classic Truck,Bike,Classic Car,4wd,Best in Show,Top 10");
 
             // build all the rows for the csv
-            foreach (Ballot bal in _ballots)
+            foreach (Ballot bal in Ballots)
             {
-                sb.AppendLine(bal.StreedRod + "," +
+                sb.AppendLine(bal.StreetRod + "," +
                     bal.Modern + "," +
                     bal.Import + "," +
                     bal.RatRod + "," +
@@ -296,7 +244,7 @@ namespace CarCruiseTally
                     bal.ClassicCar + "," +
                     bal.FourWD + "," +
                     bal.BestInShow + "," +
-                    string.Join(" ", bal.Top20.Select(i => i.ToString())));
+                    string.Join(" ", bal.Top10.Select(i => i.ToString())));
             }
 
             // open the save file dialog 
@@ -317,20 +265,14 @@ namespace CarCruiseTally
         /// </summary>
         /// <param name="sender">object snder</param>
         /// <param name="e">event arguments</param>
-        private void btn_exit_Click(object sender, RoutedEventArgs e)
-        {
-            Environment.Exit(0);
-        }
+        private void btn_exit_Click(object sender, RoutedEventArgs e) => Environment.Exit(0);
 
         /// <summary>
         /// Update the interface and recalculate the ballots
         /// </summary>
         /// <param name="sender">object snder</param>
         /// <param name="e">event arguments</param>
-        private void btn_update_Click(object sender, RoutedEventArgs e)
-        {
-            TallyCurrentBallots();
-        }
+        private void btn_update_Click(object sender, RoutedEventArgs e) => TallyCurrentBallots();
 
         /// <summary>
         /// Remove the last ballot entered
@@ -342,7 +284,7 @@ namespace CarCruiseTally
             MessageBoxResult result = MessageBox.Show("Delete the previously entered ballot?","Undo", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                _ballots.Remove(_ballots.Last());
+                Ballots.Remove(Ballots.Last());
             }
         }
 

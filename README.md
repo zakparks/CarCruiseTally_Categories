@@ -7,6 +7,6 @@ This application takes user input ballot data (based on the ballot.jpg form) tha
 
 1. Each car show entrant gets one ballot, they can fill out any and all information on the ballot.
 2. Ballots are not required to have all fields filled out
-3. Prize priority is Best in Show, Reserve in Show, Best in car type categories, then Top 20. The application sorts/ignores certain awards if a car is a winner in multiple categories.
+3. Prize priority is Best in Show, Reserve in Show, Best in car type categories, then Top 10. The application sorts/ignores certain awards if a car is a winner in multiple categories.
   
 This application also allows the user to undo the previously entered ballot, and export all of the entered data to a .csv to keep after the show, in case it is needed after the fact for something.
